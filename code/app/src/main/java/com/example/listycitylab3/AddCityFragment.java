@@ -17,6 +17,18 @@ public class AddCityFragment extends DialogFragment {
         void addCity(City city);
     }
     private AddCityDialogListener listener; // Need to save what activity is calling us
+    private City cityToEdit;                // var for city to edit
+
+    // from lab hints
+    static AddCityFragment newInstance(City city) {
+        Bundle args = new Bundle();
+        args.putSerializable("city", city);
+
+        AddCityFragment fragment = new AddCityFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context); // We want on attach to do everything it did, but add more functionality below
