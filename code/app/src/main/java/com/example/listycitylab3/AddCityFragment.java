@@ -39,6 +39,7 @@ public class AddCityFragment extends DialogFragment {
             throw new RuntimeException(context + " must implement AddCityDialogListener"); // Cant work with an activity that doesnt implement our interface
         }
     }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -46,15 +47,31 @@ public class AddCityFragment extends DialogFragment {
                 LayoutInflater.from(getContext()).inflate(R.layout.fragment_add_city, null);
         EditText editCityName = view.findViewById(R.id.edit_text_city_text);
         EditText editProvinceName = view.findViewById(R.id.edit_text_province_text);
+
+        cityToEdit = (City) getArguments().getSerializable("city");
+        if (cityToEdit != null) {
+            // editing
+            editCityName.setText(cityToEdit.getName());
+            editProvinceName.setText(cityToEdit.getProvince());
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder // functions return a reference to the builder
                 .setView(view)
-                .setTitle("Add a city")
+                .setTitle(cityToEdit == null ? "Add a city" : "Edit city") // using tertiary to set the right dialogue
                 .setNegativeButton("Cancel", null)
-                .setPositiveButton("Add", (dialog, which) -> {
+                .setPositiveButton(cityToEdit == null ? "Add" : "Save", (dialog, which) -> { // same as above
                     String cityName = editCityName.getText().toString();
                     String provinceName = editProvinceName.getText().toString();
-                    listener.addCity(new City(cityName, provinceName));
+                    if (cityToEdit == null) {
+                        // Adding
+                        listener.addCity(new City(cityName, provinceName));
+                    } else {
+                        // Editing
+                        cityToEdit.setName(cityName);
+                        cityToEdit.setProvince(provinceName);
+                        listener.addCity(cityToEdit); // reused from lab
+                    }
                 })
                 .create();
     }
