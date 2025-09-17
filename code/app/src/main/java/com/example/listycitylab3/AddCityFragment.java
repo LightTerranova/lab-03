@@ -16,6 +16,7 @@ public class AddCityFragment extends DialogFragment {
     interface AddCityDialogListener { // Passes the input back to Main Activity
         void addCity(City city);
     }
+
     private AddCityDialogListener listener; // Need to save what activity is calling us
     private City cityToEdit;                // var for city to edit
 
