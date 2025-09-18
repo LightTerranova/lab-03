@@ -16,11 +16,16 @@ public class MainActivity extends AppCompatActivity implements
     private ArrayList<City> dataList;
     private ListView cityList;
     private CityArrayAdapter cityAdapter;
+
     @Override
     public void addCity(City city) {
-        cityAdapter.add(city);
+        if (!dataList.contains(city)) {
+            // New city
+            cityAdapter.add(city);
+        }
         cityAdapter.notifyDataSetChanged();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,9 +42,17 @@ public class MainActivity extends AppCompatActivity implements
         cityList = findViewById(R.id.city_list);
         cityAdapter = new CityArrayAdapter(this, dataList);
         cityList.setAdapter(cityAdapter);
+
+        // new City
         FloatingActionButton fab = findViewById(R.id.button_add_city);
         fab.setOnClickListener(v -> {
             new AddCityFragment().show(getSupportFragmentManager(), "Add City");
+        });
+
+        // edit city
+        cityList.setOnItemClickListener((parent, view, position, id) -> {
+            City city = dataList.get(position);
+            AddCityFragment.newInstance(city).show(getSupportFragmentManager(), "Edit City");
         });
     }
 }
