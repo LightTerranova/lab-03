@@ -49,7 +49,7 @@ public class AddCityFragment extends DialogFragment {
         EditText editProvinceName = view.findViewById(R.id.edit_text_province_text);
 
         // Checking if arguments are passed before we get them
-        // This was causing a crash
+        // This was causing a crash when opening a new city
         Bundle args = getArguments();
         if (args != null) {
             cityToEdit = (City) args.getSerializable("city");
