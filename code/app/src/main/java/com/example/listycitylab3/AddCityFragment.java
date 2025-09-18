@@ -48,11 +48,15 @@ public class AddCityFragment extends DialogFragment {
         EditText editCityName = view.findViewById(R.id.edit_text_city_text);
         EditText editProvinceName = view.findViewById(R.id.edit_text_province_text);
 
-        cityToEdit = (City) getArguments().getSerializable("city");
-        if (cityToEdit != null) {
-            // editing
-            editCityName.setText(cityToEdit.getName());
-            editProvinceName.setText(cityToEdit.getProvince());
+        // Checking if arguments are passed before we get them
+        // This was causing a crash
+        Bundle args = getArguments();
+        if (args != null) {
+            cityToEdit = (City) args.getSerializable("city");
+            if (cityToEdit != null) {
+                editCityName.setText(cityToEdit.getName());
+                editProvinceName.setText(cityToEdit.getProvince());
+            }
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
